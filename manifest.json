@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "add-on-ytb — Feed abonnements propre",
+  "version": "1.0.0",
+  "description": "Masque Shorts et suggestions sur youtube.com/feed/subscriptions.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "add-on-ytb@local",
+      "strict_min_version": "109.0"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://www.youtube.com/*"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}
