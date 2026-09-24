@@ -1,6 +1,9 @@
 # MacOS
 .DS_Store
 
+# Artefacts AMO
+*.xpi
+
 # Workflow Agentic
 .cursor
 memoire
