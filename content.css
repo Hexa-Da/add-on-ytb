@@ -1,4 +1,0 @@
-/* Masquage via classe : survit mieux aux re-renders YouTube que display inline seul. */
-.aytb-hide {
-  display: none !important;
-}
