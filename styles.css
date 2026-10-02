@@ -41,6 +41,17 @@
   outline-offset: 2px;
 }
 
+/* Couper l’aperçu hover (communauté : ImprovedTube / uBlock) — mute+CC en dépendent. */
+ytd-video-preview,
+#inline-preview-player,
+.ytp-inline-preview-ui,
+.ytp-inline-preview-scrim,
+ytd-thumbnail-overlay-loading-preview-renderer,
+yt-thumbnail-hover-overlay-toggle-actions-view-model,
+ytd-thumbnail-overlay-toggle-button-renderer {
+  display: none !important;
+}
+
 /* Accueil : stabiliser la barre de chips (éviter collapse / espace vide / sauts). */
 ytd-browse[page-subtype="home"] ytd-feed-filter-chip-bar-renderer,
 ytd-browse[page-subtype="home"] yt-chip-cloud-renderer {

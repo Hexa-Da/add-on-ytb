@@ -4,6 +4,16 @@ const GUIDE_HIDE = /^(accueil|shorts|vos vidéos|plus)$/i;
 // Confirmé terrain (FR) : span#title dans ytd-rich-shelf-renderer
 const SHELF_SHORTS = /^shorts$/i;
 const SHELF_RELEVANT = /^les plus pertinentes$/i;
+// Pattern ImprovedTube : couper le hover-preview à la source (sinon mute/CC apparaissent).
+const PREVIEW_HOVER_ROOTS = [
+  "#content.ytd-rich-item-renderer",
+  "#contents.ytd-item-section-renderer",
+  "#dismissible.ytd-compact-video-renderer",
+  "#dismissible.ytd-video-renderer",
+  "#dismissible.ytd-grid-video-renderer",
+  "ytd-rich-item-renderer",
+  "yt-lockup-view-model",
+].join(", ");
 
 let scheduled = false;
 
@@ -51,6 +61,15 @@ function schedule() {
   });
 }
 
+/** Empêche YouTube de démarrer l’aperçu inline (mute/CC) — pattern ImprovedTube. */
+function blockHoverPreview(event) {
+  if (
+    event.composedPath().some((node) => typeof node.matches === "function" && node.matches(PREVIEW_HOVER_ROOTS))
+  ) {
+    event.stopImmediatePropagation();
+  }
+}
+
 function boot() {
   clean();
   new MutationObserver(schedule).observe(document.documentElement, {
@@ -58,6 +77,7 @@ function boot() {
     subtree: true,
   });
   document.addEventListener("yt-navigate-finish", schedule);
+  window.addEventListener("mouseenter", blockHoverPreview, true);
 }
 
 if (document.readyState === "loading") {

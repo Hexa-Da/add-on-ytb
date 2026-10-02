@@ -62,13 +62,20 @@ function waitForMenuItem(pattern, timeoutMs) {
   return new Promise((resolve) => {
     const deadline = Date.now() + timeoutMs;
     const id = setInterval(() => {
-      for (const el of document.querySelectorAll(
-        "ytd-menu-service-item-renderer, tp-yt-paper-item, yt-list-item-view-model"
-      )) {
-        if (pattern.test(el.textContent || "")) {
-          clearInterval(id);
-          resolve(el);
-          return;
+      // Ne jamais chercher dans tout le document : le guide a aussi « Regarder plus tard »
+      // (lien playlist) et serait cliqué à la place de l’item du menu ⋮.
+      const popups = document.querySelectorAll(
+        "ytd-menu-popup-renderer, tp-yt-iron-dropdown:not([aria-hidden='true'])"
+      );
+      for (const popup of popups) {
+        for (const el of popup.querySelectorAll(
+          "ytd-menu-service-item-renderer, tp-yt-paper-item, yt-list-item-view-model"
+        )) {
+          if (pattern.test(el.textContent || "")) {
+            clearInterval(id);
+            resolve(el);
+            return;
+          }
         }
       }
       if (Date.now() > deadline) {
@@ -146,6 +153,7 @@ function makeWlButton(card) {
   btn.addEventListener("click", (e) => {
     e.preventDefault();
     e.stopPropagation();
+    e.stopImmediatePropagation();
     addToWatchLater(card);
   });
   return btn;
