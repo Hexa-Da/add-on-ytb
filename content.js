@@ -4,15 +4,18 @@ const GUIDE_HIDE = /^(accueil|shorts|vos vidéos|plus)$/i;
 // Confirmé terrain (FR) : span#title dans ytd-rich-shelf-renderer
 const SHELF_SHORTS = /^shorts$/i;
 const SHELF_RELEVANT = /^les plus pertinentes$/i;
-// Pattern ImprovedTube : couper le hover-preview à la source (sinon mute/CC apparaissent).
+// Confirmé DevTools (recherche) : a#thumbnail → ytd-thumbnail → #dismissible → ytd-video-renderer
+// Confirmé DevTools (/watch related) : yt-thumbnail-view-model → … → yt-lockup-view-model
+// Accueil / grilles : ytd-rich-item-renderer (+ lockup) ; compact/grid legacy conservés
+// Retiré : #contents.ytd-item-section-renderer (section entière, pas une carte)
 const PREVIEW_HOVER_ROOTS = [
-  "#content.ytd-rich-item-renderer",
-  "#contents.ytd-item-section-renderer",
-  "#dismissible.ytd-compact-video-renderer",
-  "#dismissible.ytd-video-renderer",
-  "#dismissible.ytd-grid-video-renderer",
+  "ytd-thumbnail",
+  "yt-thumbnail-view-model",
+  "ytd-video-renderer",
   "ytd-rich-item-renderer",
   "yt-lockup-view-model",
+  "ytd-compact-video-renderer",
+  "ytd-grid-video-renderer",
 ].join(", ");
 
 let scheduled = false;
