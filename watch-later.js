@@ -166,6 +166,6 @@ function attachWl(card) {
   }
 }
 
-export function injectWl(root) {
+function injectWl(root) {
   root.querySelectorAll(CARD_SEL).forEach(attachWl);
 }

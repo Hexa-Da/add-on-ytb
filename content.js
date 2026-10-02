@@ -1,5 +1,3 @@
-import { injectWl } from "./watch-later.js";
-
 const SUB_PATH = "/feed/subscriptions";
 // Confirmé terrain (FR) : yt-formatted-string.title
 const GUIDE_HIDE = /^(accueil|shorts|vos vidéos|plus)$/i;
