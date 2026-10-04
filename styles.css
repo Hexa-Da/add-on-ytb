@@ -1,11 +1,10 @@
-/* WL injecté : bouton overlay au hover vignette. */
+/* Overlays injectés : boutons au hover vignette (WL + Pas intéressé). */
 .aoy-thumb {
   position: relative;
 }
 
-.aoy-wl-btn {
+.aoy-thumb-btn {
   position: absolute;
-  top: 6px;
   right: 6px;
   z-index: 100;
   display: flex;
@@ -25,16 +24,24 @@
   backdrop-filter: blur(4px);
 }
 
-.aoy-thumb:hover > .aoy-wl-btn {
+.aoy-wl-btn {
+  top: 6px;
+}
+
+.aoy-ni-btn {
+  top: 42px;
+}
+
+.aoy-thumb:hover > .aoy-thumb-btn {
   opacity: 1;
   pointer-events: auto;
 }
 
-.aoy-wl-btn:hover {
+.aoy-thumb-btn:hover {
   background: rgba(15, 15, 15, 0.7);
 }
 
-.aoy-wl-btn:focus-visible {
+.aoy-thumb-btn:focus-visible {
   opacity: 1;
   pointer-events: auto;
   outline: 2px solid #f00;

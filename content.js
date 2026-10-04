@@ -53,6 +53,7 @@ function clean() {
   cleanGuide(root);
   cleanShelves(root);
   injectWl(root);
+  injectNi(root);
 }
 
 function schedule() {
