@@ -54,6 +54,7 @@ function clean() {
   cleanShelves(root);
   injectWl(root);
   injectNi(root);
+  injectWlRemove(root);
 }
 
 function schedule() {

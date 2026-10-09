@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "add-on-ytb",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Masque le contenu indésirable sur youtube",
   "browser_specific_settings": {
     "gecko": {
@@ -15,7 +15,13 @@
   "content_scripts": [
     {
       "matches": ["*://www.youtube.com/*"],
-      "js": ["thumb-overlay.js", "watch-later.js", "not-interested.js", "content.js"],
+      "js": [
+        "thumb-overlay.js",
+        "watch-later.js",
+        "not-interested.js",
+        "remove-from-wl.js",
+        "content.js"
+      ],
       "css": ["styles.css"],
       "run_at": "document_idle"
     }

@@ -5,7 +5,7 @@ const CARD_SEL = [
   "ytd-grid-video-renderer",
   "yt-lockup-view-model",
 ].join(", ");
-const MORE_MENU = /more actions|plus d['’]actions|autres actions/i;
+const MORE_MENU = /more actions|action menu|plus d['’]actions|autres actions/i;
 const MENU_TIMEOUT_MS = 1500;
 
 let menuBusy = false;
@@ -61,10 +61,26 @@ function buttonLabel(btn) {
 }
 
 function findMenuButton(card) {
-  for (const btn of card.querySelectorAll("button[aria-label], button[title]")) {
+  for (const btn of card.querySelectorAll(
+    "button[aria-label], button[title], yt-icon-button[aria-label], yt-icon-button[title]"
+  )) {
     if (MORE_MENU.test(buttonLabel(btn))) return btn;
   }
-  return null;
+  // Playlist / shells récents : ⋮ dans ytd-menu-renderer sans libellé FR/EN stable
+  const menu = card.querySelector("ytd-menu-renderer");
+  if (!menu) return null;
+  return (
+    menu.querySelector("button#button") ||
+    menu.querySelector("button") ||
+    menu.querySelector("yt-icon-button#button") ||
+    menu.querySelector("yt-icon-button") ||
+    menu.querySelector("[role='button']")
+  );
+}
+
+function menuItemMatches(el, pattern) {
+  if (typeof pattern === "function") return pattern(el);
+  return pattern.test(el.textContent || "");
 }
 
 function waitForMenuItem(pattern, timeoutMs) {
@@ -78,9 +94,9 @@ function waitForMenuItem(pattern, timeoutMs) {
       );
       for (const popup of popups) {
         for (const el of popup.querySelectorAll(
-          "ytd-menu-service-item-renderer, tp-yt-paper-item, yt-list-item-view-model"
+          "ytd-menu-service-item-renderer, ytd-menu-navigation-item-renderer, tp-yt-paper-item, yt-list-item-view-model, [role='menuitem']"
         )) {
-          if (pattern.test(el.textContent || "")) {
+          if (menuItemMatches(el, pattern)) {
             clearInterval(id);
             resolve(el);
             return;
@@ -95,7 +111,7 @@ function waitForMenuItem(pattern, timeoutMs) {
   });
 }
 
-async function runMenuAction(card, pattern) {
+async function runMenuAction(card, pattern, timeoutMs = MENU_TIMEOUT_MS) {
   if (menuBusy) return;
   const menuBtn = findMenuButton(card);
   if (!menuBtn) return;
@@ -131,17 +147,17 @@ async function runMenuAction(card, pattern) {
 
   try {
     menuBtn.click();
-    const item = await waitForMenuItem(pattern, MENU_TIMEOUT_MS);
+    const item = await waitForMenuItem(pattern, timeoutMs);
     if (item) item.click();
   } finally {
     restore();
   }
 }
 
-function makeThumbButton({ className, title, pathD, onClick }) {
+function makeThumbButton({ className, title, pathD, onClick, bare }) {
   const btn = document.createElement("button");
   btn.type = "button";
-  btn.className = `aoy-thumb-btn ${className}`;
+  btn.className = bare ? className : `aoy-thumb-btn ${className}`;
   btn.title = title;
   btn.setAttribute("aria-label", title);
 
