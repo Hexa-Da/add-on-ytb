@@ -111,24 +111,3 @@ yt-thumbnail-hover-overlay-toggle-actions-view-model,
 ytd-thumbnail-overlay-toggle-button-renderer {
   display: none !important;
 }
-
-/* Accueil : stabiliser la barre de chips (hauteur / visibilité).
-   Ne pas forcer transform/overflow/display sur #chips ou #scroll-container :
-   YT scrolle via #chips { transform: translateX(...) } dans #scroll-container { overflow: hidden }. */
-ytd-browse[page-subtype="home"] ytd-feed-filter-chip-bar-renderer,
-ytd-browse[page-subtype="home"] yt-chip-cloud-renderer {
-  opacity: 1 !important;
-  visibility: visible !important;
-  min-height: 48px !important;
-  height: auto !important;
-  max-height: none !important;
-}
-
-ytd-browse[page-subtype="home"] ytd-feed-filter-chip-bar-renderer #scroll-container,
-ytd-browse[page-subtype="home"] yt-chip-cloud-renderer #scroll-container,
-ytd-browse[page-subtype="home"] yt-chip-cloud-renderer #chips-wrapper {
-  opacity: 1 !important;
-  visibility: visible !important;
-  min-height: 40px !important;
-  max-height: none !important;
-}
